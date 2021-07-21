@@ -1,5 +1,5 @@
 {
-  "name": "eventemitter",
+  "name": "event-emitter",
   "version": "1.0.0",
   "description": "```js\r const onStatusChange = new EventEmitter();",
   "main": "index.js",

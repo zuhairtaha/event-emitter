@@ -1,7 +1,7 @@
 /**
  * @template T
  */
-class EventEmitter {
+export class EventEmitter {
   constructor() {
     /**
      * @private
@@ -81,5 +81,3 @@ class EventEmitter {
     this.removeAll();
   }
 }
-
-module.exports = EventEmitter;
