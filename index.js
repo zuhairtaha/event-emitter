@@ -29,6 +29,13 @@ export class EventEmitter {
   /**
    * @param {!function(...T): void} listener
    */
+  subscribe(listener) {
+    this.add(listener);
+  }
+
+  /**
+   * @param {!function(...T): void} listener
+   */
   addEventListener(listener) {
     this.add(listener);
   }

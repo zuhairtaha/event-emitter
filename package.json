@@ -1,16 +1,26 @@
 {
-  "name": "tahasoft-event-emitter",
+  "name": "@tahasoft/eventemitter",
   "version": "1.0.0",
-  "description": "```js\r const onStatusChange = new EventEmitter();",
+  "description": "EventEmitter class helps to handle our events in the browser or Node.js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "EventEmitter",
+    "addEventListener",
+    "addListener",
+    "emit",
+    "browser",
+    "emitter",
+    "event",
+    "subscribe"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zuhairtaha/event-emitter.git"
   },
-  "author": "",
+  "author": "Zuhair Taha",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/zuhairtaha/event-emitter/issues"

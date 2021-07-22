@@ -1,3 +1,13 @@
+- [EventEmitter](#eventemitter)
+- [Usage](#usage)
+  - [Example 1](#example-1)
+  - [Example 2](#example-2)
+  - [Example 3](#example-3)
+  - [Example 4](#example-4)
+- [Methods](#methods)
+
+# EventEmitter
+A helper class to handle events in the browser (or in Node.js) help us to follow [Publish–subscribe pattern](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern)
 # Usage
 
 ## Example 1
@@ -55,8 +65,56 @@ user.onStatusChange.add(status => {
 });
 ```
 
-## Methods
+## Example 4
+Using TypeScript
+```ts
+class User {
+  public onLogin = new EventEmitter<string>();
 
-- `add` = `addListener` = `addEventListener`
-- `remove` = `removeListener` = `removeEventListener`
-- `on` = `dispatch`
+  public login(userName: string, password: string) {
+    // validate username and password
+    this.onLogin.emit(userName);
+  }
+
+  public logout() {
+    // logout
+    this.onLogin.removeAllListeners();
+  }
+}
+
+const user = new User();
+
+user.onLogin.add((name: string) => {
+  console.log(`User ${name} has logged in`);
+});
+
+user.login('John', '1234abcd');
+
+```
+
+# Methods
+- To add a listener use any of those
+```js
+add(listener)
+addListener(listener)
+addEventListener(listener)
+subscribe(listener)
+```
+- Remove a listener using any of those
+
+```js
+remove(listener)
+removeListener(listener)
+removeEventListener(listener)
+```
+To remove all listeners
+```js
+removeAllListeners()
+```
+
+- Execute each of the listeners in order with the supplied arguments
+```js
+emit(args)
+dispatch(args)
+```
+args: arguments which is optional
