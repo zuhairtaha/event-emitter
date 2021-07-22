@@ -1,6 +1,6 @@
 {
   "name": "@tahasoft/eventemitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "EventEmitter class helps to handle our events in the browser or Node.js",
   "main": "index.js",
   "scripts": {
