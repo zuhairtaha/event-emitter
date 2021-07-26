@@ -6,9 +6,17 @@
   - [Example 4](#example-4)
 - [Methods](#methods)
 
+
 # EventEmitter
-A helper class to handle events in the browser (or in Node.js) help us to follow [Publish–subscribe pattern](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern)
+A helper class to handle events in the browser (or in Node.js) help us to follow [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) and write a clean and readable code
+
+![observer-pattern-typescript-javascript](images/javascript-observer.jpg)
+
+
 # Usage
+```js
+import { EventEmitter } from 'tahasoft-event-emitter';
+```
 
 ## Example 1
 ```js
@@ -18,7 +26,9 @@ function updateStatus() {
   // ...
   onStatusChange.emit();
 }
-
+```
+```js
+// somewhere else, we want to add a listener when status change
 onStatusChange.add(() => {
   // ...
 });
@@ -35,7 +45,9 @@ function updateStatus(status) {
   // ...
   onStatusChange.emit(status);
 }
-
+```
+```js
+// somewhere else, we want to add a listener when status change
 onStatusChange.add(status => {
   // ... (status is a string)
 });
