@@ -65,6 +65,13 @@ export class EventEmitter {
   }
 
   /**
+   * @param {!function(...T): void} listener
+   */
+  unsubscribe(listener) {
+    this.remove(listener);
+  }
+
+  /**
    * @param {...T} args
    */
   emit(...args) {

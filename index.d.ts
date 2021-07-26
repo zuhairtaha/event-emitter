@@ -6,6 +6,7 @@ declare module 'tahasoft-event-emitter' {
     addListener(listener: (...args: T[]) => void): void;
     addEventListener(listener: (...args: T[]) => void): void;
     remove(listener: (...args: T[]) => void): void;
+    unsubscribe(listener: (...args: T[]) => void): void;
     removeListener(listener: (...args: T[]) => void): void;
     removeEventListener(listener: (...args: T[]) => void): void;
     removeAll(): void;

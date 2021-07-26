@@ -12,7 +12,9 @@
     "browser",
     "emitter",
     "event",
-    "subscribe"
+    "subscribe",
+    "observer",
+    "pattern"
   ],
   "repository": {
     "type": "git",
