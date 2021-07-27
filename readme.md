@@ -118,6 +118,7 @@ subscribe(listener)
 remove(listener)
 removeListener(listener)
 removeEventListener(listener)
+unsubscribe(listener)
 ```
 To remove all listeners
 ```js
