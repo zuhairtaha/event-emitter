@@ -3,7 +3,9 @@
   "version": "1.0.6",
   "description": "EventEmitter class helps to handle our events in the browser or Node.js",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "generate-types": "tsc --emitDeclarationOnly --declaration --declarationDir types"
+  },
   "keywords": [
     "EventEmitter",
     "addEventListener",
@@ -14,7 +16,8 @@
     "event",
     "subscribe",
     "observer",
-    "pattern"
+    "pattern",
+    "listener"
   ],
   "repository": {
     "type": "git",
@@ -25,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/zuhairtaha/event-emitter/issues"
   },
-  "homepage": "https://github.com/zuhairtaha/event-emitter#readme"
+  "homepage": "https://github.com/zuhairtaha/event-emitter#readme",
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
 }
