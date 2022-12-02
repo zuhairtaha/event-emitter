@@ -1,17 +1,10 @@
 declare module 'tahasoft-event-emitter' {
+  type FunctionArguments<T> = [T] extends [(...args: infer U) => any] ? U : [T] extends [void] ? [] : [T];
   class EventEmitter<T> {
-    emit(args: T): void;
-    add(listener: (...args: T[]) => void): void;
-    subscribe(listener: (...args: T[]) => void): void;
-    addListener(listener: (...args: T[]) => void): void;
-    addEventListener(listener: (...args: T[]) => void): void;
-    remove(listener: (...args: T[]) => void): void;
-    unsubscribe(listener: (...args: T[]) => void): void;
-    removeListener(listener: (...args: T[]) => void): void;
-    removeEventListener(listener: (...args: T[]) => void): void;
+    private _listeners;
+    add(listener: (...args: FunctionArguments<T>) => void): void;
+    remove(listener: (...args: FunctionArguments<T>) => void): void;
+    emit(...args: FunctionArguments<T>): void;
     removeAll(): void;
-    removeAllListeners(): void;
-    emit(...args: T[]): void;
-    dispatch(...args: T[]): void;
   }
-} 
+}
