@@ -4,8 +4,7 @@
   "description": "EventEmitter class helps to handle our events in the browser or Node.js",
   "main": "index.js",
   "scripts": {
-    "pretsc": "tsc index.ts --emitDeclarationOnly --declaration",
-    "tsc": "tsc index.ts"
+    "build": "tsc index.ts"
   },
   "keywords": [
     "EventEmitter",
@@ -31,6 +30,6 @@
   },
   "homepage": "https://github.com/zuhairtaha/event-emitter#readme",
   "devDependencies": {
-    "typescript": "^4.9.3"
+    "typescript": "^5.3.3"
   }
 }

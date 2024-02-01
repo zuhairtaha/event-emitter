@@ -1,24 +1,31 @@
-- [EventEmitter](#eventemitter)
-- [Usage](#usage)
-  - [Example 1](#example-1)
-  - [Example 2](#example-2)
-  - [Example 3](#example-3)
-  - [Example 4](#example-4)
-- [Methods](#methods)
+# Event Emitter
 
+[![npm version](https://img.shields.io/npm/v/tahasoft-event-emitter.svg?style=flat-square)](https://www.npmjs.com/package/tahasoft-event-emitter)
+[![license](https://img.shields.io/npm/l/tahasoft-event-emitter.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![npm downloads](https://img.shields.io/npm/dm/tahasoft-event-emitter.svg?style=flat-square)](https://www.npmjs.com/package/tahasoft-event-emitter)
 
-# EventEmitter
-A helper class to handle events in the browser (or in Node.js) help us to follow [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) and write a clean and readable code
+Simple and generic JavaScript Event Emitter class for implementing the [Observer Pattern](https://en.wikipedia.org/wiki/Observer_pattern).
+
+The Observer Pattern is a behavioral design pattern where an object, known as the subject, maintains a list of dependents, known as observers, that are notified of any state changes.
+
+The Observer Pattern is commonly used in scenarios where one part of a system needs to be notified of changes in another part without being tightly coupled to it. It promotes loose coupling between components, making it easier to maintain and extend the system.
 
 ![observer-pattern-typescript-javascript](images/javascript-observer.jpg)
 
+## Installation
 
-# Usage
-```js
-import { EventEmitter } from 'tahasoft-event-emitter';
+```bash
+npm install tahasoft-event-emitter
 ```
 
-## Example 1
+# Usage
+
+```js
+import { EventEmitter } from "tahasoft-event-emitter";
+```
+
+## Example 1: Basic Event Emission
+
 ```js
 const onStatusChange = new EventEmitter();
 
@@ -27,15 +34,16 @@ function updateStatus() {
   onStatusChange.emit();
 }
 ```
+
+Somewhere else in your code, add a listener for the status change event:
+
 ```js
-// somewhere else, we want to add a listener when status change
 onStatusChange.add(() => {
   // ...
 });
 ```
 
-## Example 2
-With data for the event
+## Example 2: Event with Data
 
 ```js
 /** @type {!EventEmitter<!string>} */
@@ -46,20 +54,21 @@ function updateStatus(status) {
   onStatusChange.emit(status);
 }
 ```
+
+Add a listener with data for the status change event:
+
 ```js
-// somewhere else, we want to add a listener when status change
 onStatusChange.add(status => {
   // ... (status is a string)
 });
 ```
 
-## Example 3
-In another class
+## Example 3: Using in a Class
 
 ```js
 class User {
   constructor() {
-    this.status = '';
+    this.status = "";
 
     /** @type {!EventEmitter<!string>} */
     this.onStatusChange = new EventEmitter();
@@ -77,8 +86,8 @@ user.onStatusChange.add(status => {
 });
 ```
 
-## Example 4
-Using TypeScript
+## Example 4: TypeScript Usage
+
 ```ts
 class User {
   public onLogin = new EventEmitter<string>();
@@ -100,34 +109,40 @@ user.onLogin.add((name: string) => {
   console.log(`User ${name} has logged in`);
 });
 
-user.login('John', '1234abcd');
-
+user.login("John", "1234abcd");
 ```
 
 # Methods
-- To add a listener use any of those
-```js
-add(listener)
-addListener(listener)
-addEventListener(listener)
-subscribe(listener)
-```
-- Remove a listener using any of those
+
+To add a listener, you can use any of the following:
 
 ```js
-remove(listener)
-removeListener(listener)
-removeEventListener(listener)
-unsubscribe(listener)
+add(listener);
+addListener(listener);
+addEventListener(listener);
+subscribe(listener);
 ```
+
+Remove a listener using any of the following:
+
+```js
+remove(listener);
+removeListener(listener);
+removeEventListener(listener);
+unsubscribe(listener);
+```
+
 To remove all listeners
+
 ```js
-removeAllListeners()
+removeAllListeners();
 ```
 
-- Execute each of the listeners in order with the supplied arguments
+Execute each of the listeners in order with the supplied arguments:
+
 ```js
-emit(args)
-dispatch(args)
+emit(args);
+dispatch(args);
 ```
-args: arguments which is optional
+
+The `args` parameter is optional and represents the arguments to be passed to the listeners.
