@@ -1,32 +1,30 @@
-type FunctionArguments<T> = [T] extends [(...args: infer U) => any] ? U : [T] extends [void] ? [] : [T];
+type Listener<T> = (...args: T[]) => void;
 
 export class EventEmitter<T> {
-  private _listeners: Array<(...args: FunctionArguments<T>) => void> = [];
-
-  add(listener: (...args: FunctionArguments<T>) => void) {
-    if (this._listeners.indexOf(listener) === -1) {
-      this._listeners.push(listener);
-    }
-  }
+  private _listeners: Listener<T>[] = [];
 
   // Alias methods
   addListener = this.add;
   addEventListener = this.add;
   subscribe = this.add;
+  removeListener = this.remove;
+  removeEventListener = this.remove;
+  unsubscribe = this.remove;
 
-  public remove(listener: (...args: FunctionArguments<T>) => void): void {
+  add(listener: Listener<T>) {
+    if (this._listeners.indexOf(listener) === -1) {
+      this._listeners.push(listener);
+    }
+  }
+
+  public remove(listener: Listener<T>): void {
     const index = this._listeners.indexOf(listener);
     if (index !== -1) {
       this._listeners.splice(index, 1);
     }
   }
 
-  // Alias methods
-  removeListener = this.remove;
-  removeEventListener = this.remove;
-  unsubscribe = this.remove;
-
-  public emit(...args: FunctionArguments<T>): void {
+  public emit(...args: T[]): void {
     for (const listener of this._listeners) {
       listener(...args);
     }
