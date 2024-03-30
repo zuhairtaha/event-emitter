@@ -10,11 +10,22 @@ export class EventEmitter<T> {
   removeListener = this.remove;
   removeEventListener = this.remove;
   unsubscribe = this.remove;
+  dispatch = this.emit;
+  once = this.addOnce;
+  wait = this.addOnce;
 
   add(listener: Listener<T>) {
     if (this._listeners.indexOf(listener) === -1) {
       this._listeners.push(listener);
     }
+  }
+
+  addOnce(listener: Listener<T>) {
+    const onceListener = (...args: T[]) => {
+      this.remove(onceListener);
+      listener(...args);
+    };
+    this.add(onceListener);
   }
 
   public remove(listener: Listener<T>): void {
