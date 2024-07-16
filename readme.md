@@ -112,6 +112,57 @@ user.onLogin.add((name: string) => {
 user.login("John", "1234abcd");
 ```
 
+## Example 5: Using AbortController
+
+```js
+class User {
+  constructor() {
+    this.eventsAborter = new AbortController();
+    this.onStatusChange = new EventEmitter();
+    this.onLogin = new EventEmitter();
+
+    const signal = this.eventsAborter.signal;
+    this.onStatusChange.add(this.handleStatusChange, { signal });
+    this.onLogin.add(
+      () => {
+        console.log("User logged in");
+      },
+      { signal }
+    );
+  }
+
+  handleStatusChange() {
+    console.log("status changed");
+  }
+
+  dispose() {
+    // Abort all listeners
+    this.eventsAborter.abort();
+  }
+}
+
+const user = new User();
+
+// Somewhere else in your code
+user.onStatusChange.add(() => {
+  console.log("Another listener for status change");
+});
+
+// Disposing of all listeners using AbortController
+user.dispose();
+```
+
+# Listener Options
+
+When adding a listener, you can pass an optional `options` object:
+
+`signal` (AbortSignal): An `AbortSignal` to automatically remove the listener when the signal is triggered.
+
+```js
+const controller = new AbortController();
+eventEmitter.add(listener, { signal: controller.signal });
+```
+
 # Methods
 
 To add a listener, you can use any of the following:

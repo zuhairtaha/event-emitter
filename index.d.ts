@@ -1,16 +1,46 @@
 declare module "tahasoft-event-emitter" {
-  type FunctionArguments<T> = [T] extends [(...args: infer U) => any] ? U : [T] extends [void] ? [] : [T];
+  type Listener<T> = (...args: T[]) => void;
   class EventEmitter<T> {
+    addListener: (
+      listener: Listener<T>,
+      options?: {
+        signal?: AbortSignal;
+      }
+    ) => void;
+    addEventListener: (
+      listener: Listener<T>,
+      options?: {
+        signal?: AbortSignal;
+      }
+    ) => void;
+    subscribe: (
+      listener: Listener<T>,
+      options?: {
+        signal?: AbortSignal;
+      }
+    ) => void;
+    removeListener: (listener: Listener<T>) => void;
+    removeEventListener: (listener: Listener<T>) => void;
+    unsubscribe: (listener: Listener<T>) => void;
+    dispatch: (...args: T[]) => void;
+    once: (
+      listener: Listener<T>,
+      options?: {
+        signal?: AbortSignal;
+      }
+    ) => void;
+    wait: (
+      listener: Listener<T>,
+      options?: {
+        signal?: AbortSignal;
+      }
+    ) => void;
     private _listeners;
-    add(listener: (...args: FunctionArguments<T>) => void): void;
-    addListener: (listener: (...args: FunctionArguments<T>) => void) => void;
-    addEventListener: (listener: (...args: FunctionArguments<T>) => void) => void;
-    subscribe: (listener: (...args: FunctionArguments<T>) => void) => void;
-    remove(listener: (...args: FunctionArguments<T>) => void): void;
-    removeListener: (listener: (...args: FunctionArguments<T>) => void) => void;
-    removeEventListener: (listener: (...args: FunctionArguments<T>) => void) => void;
-    unsubscribe: (listener: (...args: FunctionArguments<T>) => void) => void;
-    emit(...args: FunctionArguments<T>): void;
+    emitted: boolean;
+    add(listener: Listener<T>, options?: { signal?: AbortSignal }): void;
+    addOnce(listener: Listener<T>, options?: { signal?: AbortSignal }): void;
+    remove(listener: Listener<T>): void;
+    emit(...args: T[]): void;
     removeAll(): void;
   }
 }
