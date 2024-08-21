@@ -1,6 +1,6 @@
 {
   "name": "tahasoft-event-emitter",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A simple and generic JavaScript Event Emitter class for implementing the Observer Pattern, now with support for AbortController for automatic listener removal.",
   "main": "index.js",
   "scripts": {
