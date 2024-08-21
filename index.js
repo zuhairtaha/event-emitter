@@ -14,7 +14,7 @@ export class EventEmitter {
     }
     add(listener, options) {
         var _a;
-        const existingListener = this._listeners.find(l => l.listener === listener);
+        const existingListener = this._listeners.find(x => x.listener === listener);
         if (!existingListener) {
             this._listeners.push({ listener, signal: options === null || options === void 0 ? void 0 : options.signal });
             (_a = options === null || options === void 0 ? void 0 : options.signal) === null || _a === void 0 ? void 0 : _a.addEventListener("abort", () => this.remove(listener));
@@ -28,14 +28,15 @@ export class EventEmitter {
         this.add(onceListener, options);
     }
     remove(listener) {
-        const index = this._listeners.findIndex(l => l.listener === listener);
+        const index = this._listeners.findIndex(x => x.listener === listener);
         if (index !== -1) {
             this._listeners.splice(index, 1);
         }
     }
     emit(...args) {
         this.emitted = true;
-        for (const { listener } of this._listeners) {
+        const listeners = [...this._listeners];
+        for (const { listener } of listeners) {
             listener(...args);
         }
     }
