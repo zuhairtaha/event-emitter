@@ -4,13 +4,21 @@
 [![license](https://img.shields.io/npm/l/tahasoft-event-emitter.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![npm downloads](https://img.shields.io/npm/dm/tahasoft-event-emitter.svg?style=flat-square)](https://www.npmjs.com/package/tahasoft-event-emitter)
 
-Simple and generic JavaScript Event Emitter class for implementing the [Observer Pattern](https://en.wikipedia.org/wiki/Observer_pattern).
+A modern, lightweight **Event Emitter** for JavaScript and TypeScript, inspired by the [Observer Pattern](https://en.wikipedia.org/wiki/Observer_pattern).
 
-The Observer Pattern is a behavioral design pattern where an object, known as the subject, maintains a list of dependents, known as observers, that are notified of any state changes.
+**Key features:**
 
-The Observer Pattern is commonly used in scenarios where one part of a system needs to be notified of changes in another part without being tightly coupled to it. It promotes loose coupling between components, making it easier to maintain and extend the system.
+- 🚀 Simple API: `add`, `emit`, `remove`, `addOnce`, `removeAll`
+- 🧑‍💻 TypeScript-first: Full type safety out of the box
+- ✨ Both callback and Promise/async usage: `await emitter.addOnce()`
+- 🦺 Memory-safe: Listeners can auto-remove with `AbortController`
+- ⚡ Zero dependencies, production-ready, tiny footprint
+
+> Use it for events, hooks, signals, or decoupled reactive design!
 
 ![observer-pattern-typescript-javascript](images/javascript-observer.jpg)
+
+---
 
 ## Installation
 
@@ -18,163 +26,138 @@ The Observer Pattern is commonly used in scenarios where one part of a system ne
 npm install tahasoft-event-emitter
 ```
 
-# Usage
+---
+
+## Usage
 
 ```js
-import { EventEmitter } from "tahasoft-event-emitter";
+import { EventEmitter } from 'tahasoft-event-emitter';
 ```
 
-## Example 1: Basic Event Emission
+---
+
+### Basic Example
 
 ```js
+/** @type {EventEmitter<string>} */
 const onStatusChange = new EventEmitter();
 
-function updateStatus() {
-  // ...
-  onStatusChange.emit();
-}
-```
-
-Somewhere else in your code, add a listener for the status change event:
-
-```js
-onStatusChange.add(() => {
-  // ...
-});
-```
-
-## Example 2: Event with Data
-
-```js
-/** @type {!EventEmitter<!string>} */
-const onStatusChange = new EventEmitter();
-
-function updateStatus(status) {
-  // ...
-  onStatusChange.emit(status);
-}
-```
-
-Add a listener with data for the status change event:
-
-```js
 onStatusChange.add(status => {
-  // ... (status is a string)
+	console.log('Status changed to:', status);
 });
+
+onStatusChange.emit('Ready');
 ```
 
-## Example 3: Using in a Class
+---
+
+### Usage in a Class
 
 ```js
 class User {
-  constructor() {
-    this.status = "";
+	constructor() {
+		/** @type {EventEmitter<string>} */
+		this.onStatusChange = new EventEmitter();
+	}
 
-    /** @type {!EventEmitter<!string>} */
-    this.onStatusChange = new EventEmitter();
-  }
-
-  updateStatus(status) {
-    this.status = status;
-    onStatusChange.emit(status);
-  }
+	updateStatus(status) {
+		this.onStatusChange.emit(status);
+	}
 }
 
 const user = new User();
 user.onStatusChange.add(status => {
-  // do something
+	console.log('New status:', status);
 });
+
+user.updateStatus('Active');
 ```
 
-## Example 4: TypeScript Usage
+---
+
+### TypeScript Example
 
 ```ts
 class User {
-  public onLogin = new EventEmitter<string>();
+	public onLogin = new EventEmitter<string>();
 
-  public login(userName: string, password: string) {
-    // validate username and password
-    this.onLogin.emit(userName);
-  }
-
-  public logout() {
-    // logout
-    this.onLogin.removeAllListeners();
-  }
+	public login(userName: string, password: string) {
+		// validate...
+		this.onLogin.emit(userName);
+	}
 }
 
 const user = new User();
 
-user.onLogin.add((name: string) => {
-  console.log(`User ${name} has logged in`);
+user.onLogin.add(name => {
+	console.log(`User ${name} has logged in`);
 });
 
-user.login("John", "1234abcd");
+user.login('John', '1234abcd');
 ```
 
-## Example 5: Using AbortController
+---
+
+## Advanced Usage
+
+### One-Time Listeners
+
+Execute a listener only once, then remove automatically:
 
 ```js
-class User {
-  constructor() {
-    this.eventsAborter = new AbortController();
-    this.onStatusChange = new EventEmitter();
-    this.onLogin = new EventEmitter();
-
-    const signal = this.eventsAborter.signal;
-    this.onStatusChange.add(this.handleStatusChange, { signal });
-    this.onLogin.add(
-      () => {
-        console.log("User logged in");
-      },
-      { signal }
-    );
-  }
-
-  handleStatusChange() {
-    console.log("status changed");
-  }
-
-  dispose() {
-    // Abort all listeners
-    this.eventsAborter.abort();
-  }
-}
-
-const user = new User();
-
-// Somewhere else in your code
-user.onStatusChange.add(() => {
-  console.log("Another listener for status change");
+onStatusChange.addOnce(status => {
+	console.log('This runs once for status:', status);
 });
 
-// Disposing of all listeners using AbortController
-user.dispose();
+onStatusChange.emit('Online'); // Triggers above
+onStatusChange.emit('Offline'); // Listener is not called again
 ```
 
-# Listener Options
+---
 
-When adding a listener, you can pass an optional `options` object:
+### Promise/Async-Await Style
 
-`signal` (AbortSignal): An `AbortSignal` to automatically remove the listener when the signal is triggered.
+Wait for the next event occurrence with a promise:
+
+```js
+async function waitForStatus() {
+	const newStatus = await onStatusChange.addOnce();
+	console.log('Status awaited:', newStatus);
+}
+waitForStatus();
+onStatusChange.emit('Loaded');
+```
+
+### Cleanup with AbortController
+
+Auto-remove listeners using AbortSignal:
 
 ```js
 const controller = new AbortController();
-eventEmitter.add(listener, { signal: controller.signal });
+onStatusChange.add(status => console.log('Listen once, then remove automatically if aborted:', status), {
+	signal: controller.signal
+});
+
+// Later...
+controller.abort(); // Listener is removed
 ```
 
-# Methods
+---
 
-To add a listener, you can use any of the following:
+## API Reference
+
+### Add Listeners
 
 ```js
-add(listener);
-addListener(listener);
-addEventListener(listener);
-subscribe(listener);
+add(listener, options?)
+addListener(listener, options?)
+addEventListener(listener, options?)
+subscribe(listener, options?)
 ```
 
-Remove a listener using any of the following:
+`options` can include `{ signal: AbortSignal }` for automatic removal.
+
+### Remove Listeners
 
 ```js
 remove(listener);
@@ -183,17 +166,57 @@ removeEventListener(listener);
 unsubscribe(listener);
 ```
 
-To remove all listeners
+### Remove All Listeners
 
 ```js
+removeAll();
 removeAllListeners();
 ```
 
-Execute each of the listeners in order with the supplied arguments:
+### Emit an Event
 
 ```js
-emit(args);
-dispatch(args);
+emit(arg);
+dispatch(arg);
 ```
 
-The `args` parameter is optional and represents the arguments to be passed to the listeners.
+The `arg` is passed to all listeners.
+
+### One-Time Listeners
+
+- **Callback form:**  
+  `addOnce(listener, options?)`
+- **Promise form:**  
+  `await addOnce(options?)` resolves with the next value emitted.
+
+---
+
+## Listener Options
+
+`{ signal: AbortSignal }` – pass an [AbortController signal](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) for automatic listener removal:
+
+```js
+const controller = new AbortController();
+emitter.add(listener, { signal: controller.signal });
+controller.abort(); // listener removed
+```
+
+---
+
+## Why Choose This EventEmitter?
+
+- **Strictly typed** for single-argument events—works great with primitives or objects.
+- **Promise/async support** for modern codebases.
+- **Abortsafe:** no memory leaks—auto-cleanup with `AbortController`.
+- **Minimal and fast**—~1KB gzipped, zero dependencies.
+- **Production ready**—used in both Node.js and browser projects.
+
+---
+
+## License
+
+MIT
+
+---
+
+> Powered by tahasoft-event-emitter – the robust TypeScript/JavaScript event emitter for modern apps.
